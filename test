@@ -1,3 +1,18 @@
-number one
-number two
-number three
+library(GetHFData)
+
+df.out <- ghfd_get_HF_data(my.assets = c('PETR4', 'VALE5'), type.matching = "exact",
+type.market = "equity", type.data = "trades", first.date = "2016-01-01",
+last.date = "2016-01-05", first.time = '11:00:00', last.time = '17:00:00',
+type.output = "agg", agg.diff = "15 min", dl.dir = "ftp files",
+max.dl.tries = 10, clean.files = FALSE, only.dl = FALSE)
+
+library(GetHFData)
+first.time <-'11:00:00'
+last.time <-'17:00:00'
+first.date <- as.Date('2015-11-03')
+last.date <- as.Date('2015-11-03')
+type.output <-'raw'
+type.data <-'orders'
+type.market ='equity-odds'
+df.out <- ghfd_get_HF_data(my.assets =  c('PETR4', 'VALE5') , type.market = type.market, type.data = type.data, first.date = first.date, last.date = last.date, first.time = first.time, last.time = last.time, type.output = type.output)
+df.lob <- ghfd_build_lob(df.out)
