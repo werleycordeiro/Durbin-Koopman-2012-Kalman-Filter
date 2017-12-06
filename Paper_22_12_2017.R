@@ -1,5 +1,4 @@
-#-------------------------------------------------------#
-#				  Artigo Econometria II                 #
+#                   Artigo Econometria II
 #-------------------------------------------------------#
 
 ### Carregar os pacotes 
@@ -42,10 +41,4 @@ y <- NSrates(NSParameters[48,], maturity.Treasury)
 plot(maturity.Treasury,juros.mensal[48,],main="Fitting Nelson-Siegel yield curve",
 xlab=c("Maturity"), type="o")
 lines(maturity.Treasury,y, col=2)
-legend("topleft",legend=c("observed yield curve","fitted yield curve"),
-col=c(1,2),lty=1)
-grid()
-
-
-
-
+legend("topleft",legend=c("observed yield curve","fitted yield curve
