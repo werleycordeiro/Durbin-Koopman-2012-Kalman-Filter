@@ -1,0 +1,51 @@
+#-------------------------------------------------------#
+#				          Artigo Econometria II                 #
+#-------------------------------------------------------#
+
+### Carregar os pacotes 
+list.of.packages <- c("tseries","highfrequency","ustyc","YieldCurve")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+library(tseries)
+library(highfrequency)
+library(ustyc)
+library(YieldCurve)
+
+### Baixa curva de juros dos EUA entre 2014 e 2017
+juros <- do.call(rbind,lapply(2014:2017,function(x) getYieldCurve(x)$df))
+juros <- juros[juros$BC_1MONTH!=0,] # Remove valores 0 da base
+datas <- as.Date(rownames(juros),format='%Y-%m-%d')
+juros.xts <- xts(juros, order.by = datas)
+
+### Excluir a última coluna por causa da duplicidade
+juros <- juros.xts[,1:(ncol(juros.xts)-1)]
+colnames(juros) <- c("1 mês","3 meses","6 meses","12 meses","24 meses","36 meses","60 meses","72 meses","120 meses","240 meses","360 meses")
+
+### Agregar as taxas de juros pela média mensal
+juros.mensal <- apply.monthly(xts(juros), mean)
+colnames(juros.mensal) <- c("R_1M","R_3M","R_6M","R_12M","R_24M","R_36M","R_60M","R_72M","R_120M","R_240M","R_360M")
+
+### Modelo Nelson-Siegel
+# maturity.Treasury <- c(1/12,3/12, 0.5, 1,2,3,5,7,10,20,30) # Em termos anuais por padrão, mas coloquei em meses abaixo:
+maturity.Treasury <- c(1,3,6, 12,24,36,60,72,120,240,360)
+NSParameters <- Nelson.Siegel( rate=juros.mensal, maturity=maturity.Treasury)
+
+### Evolução dos parâmetros estimados
+par(mfrow=c(2,2))
+plot(NSParameters$beta_0)
+plot(NSParameters$beta_1)
+plot(NSParameters$beta_2)
+plot(NSParameters$lambda)
+
+### Yield Curve
+y <- NSrates(NSParameters[48,], maturity.Treasury)
+plot(maturity.Treasury,juros.mensal[48,],main="Fitting Nelson-Siegel yield curve",
+xlab=c("Maturity"), type="o")
+lines(maturity.Treasury,y, col=2)
+legend("topleft",legend=c("observed yield curve","fitted yield curve"),
+col=c(1,2),lty=1)
+grid()
+
+
+
+
