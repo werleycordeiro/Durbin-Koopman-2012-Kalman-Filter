@@ -42,3 +42,5 @@ plot(maturity.Treasury,juros.mensal[48,],main="Fitting Nelson-Siegel yield curve
 xlab=c("Maturity"), type="o")
 lines(maturity.Treasury,y, col=2)
 legend("topleft",legend=c("observed yield curve","fitted yield curve
+col=c(1,2),lty=1)
+grid()
