@@ -1,6 +1,26 @@
+setwd("C://Users//werle//Documents//ftp files")
 library(GetHFData)
 
-df.out <- ghfd_get_HF_data(my.assets = c('DI1F21'), type.matching = "exact",type.market = "BMF",
-type.data = "trades", first.date = "2018-06-24",last.date = "2018-07-23", first.time = '9:00:00',
-last.time = '16:00:00',type.output = "agg", agg.diff = "15 min", dl.dir = "ftp files",max.dl.tries = 10,
+my.assets<- 'DI1F21'
+type.market <- 'BMF'
+type.data <- 'trades'
+first.date <- as.Date('2018-07-20')
+last.date <- as.Date('2018-07-23')
+first.time <- '9:00:00'
+last.time <- '19:00:00'
+type.output <- 'agg'
+
+
+
+df.out <- ghfd_get_HF_data(my.assets = my.assets, type.matching = "exact",type.market = type.market,
+type.data = type.data , first.date = first.date, last.date = last.date, first.time = first.time,
+last.time = last.time, type.output = type.output, agg.diff = "60 min", dl.dir = "ftp files",max.dl.tries = 10,
 clean.files = FALSE, only.dl = FALSE)
+
+
+#------------------ read file
+
+df.out<-ghfd_read_file("NEG_BMF_20180723.zip", my.assets = my.assets, type.matching = "exact",
+type.data = type.data, first.time = first.time, last.time = last.time,
+type.output = "agg", agg.diff = "5 min")
+
