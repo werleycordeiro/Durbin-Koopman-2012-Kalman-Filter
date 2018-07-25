@@ -1,6 +1,6 @@
 library(GetHFData)
 
-df.out <- ghfd_get_HF_data(my.assets = c('DI1F18'), type.matching = "exact",type.market = "BMF",
+df.out <- ghfd_get_HF_data(my.assets = c('DI1F21'), type.matching = "exact",type.market = "BMF",
 type.data = "trades", first.date = "2017-11-03",last.date = "2017-11-03", first.time = '11:00:00',
 last.time = '17:00:00',type.output = "agg", agg.diff = "15 min", dl.dir = "ftp files",max.dl.tries = 10,
 clean.files = FALSE, only.dl = FALSE)
